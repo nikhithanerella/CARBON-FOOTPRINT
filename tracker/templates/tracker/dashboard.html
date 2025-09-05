@@ -1,0 +1,144 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+<h2>🌿 Dashboard</h2>
+
+<div class="charts">
+    <div class="chart-container">
+        <h3>Footprint Over Time</h3>
+        <canvas id="lineChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <h3>Current Footprint Breakdown</h3>
+        <canvas id="pieChart"></canvas>
+    </div>
+</div>
+
+<div class="info-sections">
+    <div class="section suggestions">
+        <h3>💡 Suggestions</h3>
+        <ul>
+            {% for tip in suggestions %}
+                <li>{{ tip }}</li>
+            {% empty %}
+                <li>No suggestions yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section history">
+        <h3>📜 History</h3>
+        <ul>
+            {% for e in entries %}
+                <li>{{ e.created_at|date:"M d, Y H:i" }} — {{ e.prediction|floatformat:2 }}</li>
+            {% empty %}
+                <li>No entries yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<style>
+    .charts {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
+
+    .chart-container {
+        flex: 1 1 45%;
+        background-color: #f0f4f8;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .chart-container h3 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #17252a;
+    }
+
+    .info-sections {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .section {
+        flex: 1 1 45%;
+        background-color: #def2f1;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .section h3 {
+        color: #17252a;
+        margin-bottom: 15px;
+    }
+
+    .section ul {
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+
+    .section ul li {
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+
+    h2 {
+        color: #3aafa9;
+        margin-bottom: 30px;
+    }
+</style>
+
+<script>
+const ctx1 = document.getElementById('lineChart').getContext('2d');
+new Chart(ctx1, {
+    type: 'line',
+    data: {
+        labels: {{ dates|safe }},
+        datasets: [{
+            label: 'Footprint',
+            data: {{ predictions|safe }},
+            borderColor: 'rgb(58,175,169)',
+            tension: 0.3,
+            fill: true,
+            backgroundColor: 'rgba(58,175,169,0.2)'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+const ctx2 = document.getElementById('pieChart').getContext('2d');
+new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: ['Transport', 'Electricity', 'Food', 'Waste'],
+        datasets: [{
+            data: [
+                {{ pie_data.transport }},
+                {{ pie_data.electricity }},
+                {{ pie_data.food }},
+                {{ pie_data.waste }}
+            ],
+            backgroundColor: [
+                'rgba(255,99,132,0.6)',
+                'rgba(54,162,235,0.6)',
+                'rgba(255,206,86,0.6)',
+                'rgba(75,192,192,0.6)'
+            ]
+        }]
+    },
+    options: { responsive: true }
+});
+</script>
+{% endblock %}

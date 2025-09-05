@@ -1,0 +1,84 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+<div class="login-container">
+    <h2>🔐 Login to EcoTrack</h2>
+    <p class="subtitle">Welcome back! Let’s continue tracking your carbon footprint 🌍</p>
+
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Login</button>
+    </form>
+
+    <p class="register-link">
+        Don’t have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+</div>
+
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 40px auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .login-container h2 {
+        color: #2b7a78;
+        margin-bottom: 10px;
+    }
+
+    .login-container .subtitle {
+        font-size: 14px;
+        color: #ef7cd6ff;
+        margin-bottom: 20px;
+    }
+
+    .login-form p {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    .login-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-top: 5px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #3aafa9;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn:hover {
+        background-color: #2b7a78;
+    }
+
+    .register-link {
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .register-link a {
+        color: #2b7a78;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

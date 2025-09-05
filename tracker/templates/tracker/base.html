@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoTrack - Carbon Footprint Tracker</title>
+    <link rel="stylesheet" href="{% static 'tracker/css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body { background-color: #f4f9f9; color: #333; line-height: 1.6; }
+
+        /* Navbar */
+        nav {
+            background: linear-gradient(135deg, #2b7a78, #3aafa9);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        nav .logo a {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        nav .nav-links a:hover {
+            color: #def2f1;
+            transform: scale(1.05);
+        }
+
+        .user-info {
+            margin-right: 15px;
+            font-style: italic;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 8px 18px;
+            background-color: #3aafa9ff;
+            color: black;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #e43abcff;
+            color: #17252a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Page container */
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        h1, h2 {
+            color: #17252a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #3aafa9;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            background: #17252a;
+            color: white;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #3aafa9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <a href="{% url 'dashboard' %}">EcoTrack 🌱</a>
+    </div>
+    <div class="nav-links">
+        {% if user.is_authenticated %}
+            <span class="user-info">Hello, {{ user.username }} 👋</span>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'predict' %}">Add Entry</a>
+            <a href="{% url 'leaderboard' %}">Leaderboard</a>
+            <a href="{% url 'logout' %}" class="btn">Logout</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<footer>
+    &copy; {{ now.year }} EcoTrack | Track and Reduce Your Carbon Footprint 🌍  
+    <br>
+    Made with 💚 for a sustainable future
+</footer>
+
+</body>
+</html>
